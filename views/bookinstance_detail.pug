@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  h1 ID: #{bookinstance._id}
+
+  p #[strong Title:]
+    a(href=bookinstance.book.url) #{bookinstance.book.title}
+  p #[strong Imprint] #{bookinstance.imprint}
+
+  p #[strong Status:]
+  if bookinstance.status == 'Available'
+    p.text-success #{bookinstance.status}
+  else if bookinstance.status == 'Maintanance'
+    p.text-danger #{bookinstance.status}
+  else
+    p.text-warning #{bookinstance.status}
+  if bookinstance.status != 'Available'
+    p #[strong due back] #{bookinstance.due_back}
+
+  br
+  h5
+    a(href=bookinstance.url + '/delete', style='color:red') Delete book instance

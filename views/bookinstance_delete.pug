@@ -1,0 +1,15 @@
+extends layout
+
+block content
+
+  h1=title
+
+  form(method='POST' action='')
+    h4 Do you really want to delete this book instance?
+      div(style='margin-left:20px; margin-top:20px')
+        p Imprint: #{bookinstance.imprint}
+        p status: #{bookinstance.status}
+        if(bookinstance.status != 'Available')
+          p Due back: #{bookinstance.due_back}
+        input#confirm(type='hidden' name='id' value=bookinstance._id)
+    button.btn.btn-primary(type='Submit') Delete

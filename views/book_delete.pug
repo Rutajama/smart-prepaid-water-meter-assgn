@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  h1 #{title} #{book.title}
+
+    //delete related book instances firs
+  if bookinstances_list.length
+    p #[strong Delete the following book instances first before deleting this book]
+    h4 book instances
+    dl
+      each bookinstance in bookinstances_list
+        dt
+          a(href=bookinstance.url) #{`Imprint: ${bookinstance.imprint}`}
+        dd  #{`Due back: ${bookinstance.due_back}`}
+
+          
+  else 
+    form(method='POST' action='')
+      p #[strong Do you really want to delete this book?]
+      input#confirm(type='hidden' name='bookId' value=book._id)
+      button.btn.btn-primary(type='submit') Delete
+
