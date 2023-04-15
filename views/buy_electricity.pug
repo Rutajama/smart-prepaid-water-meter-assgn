@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1(style='color: red; text-align: center')= title
+
+  div(style='margin-left:5%; margin-top: 100px')
+    form(method='POST' action='')
+      div.form-group
+        label(for='units') Units:
+        input#units.form-control(type='text' placeholder='Enter units' name='units' required='true' value='')
+      
+      button.btn.btn-primary(type='submit') Submit

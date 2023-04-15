@@ -8,6 +8,9 @@ const router = express.Router();
 
 const customer_controller = require("../controllers/customerController");
 
+router.get("/tokensms", customer_controller.send_sms_token_get);;
+router.post("/tokensms", customer_controller.send_sms_token_post);;
+
 router.get("/", customer_controller.index);;
 
 router.get("/customers", customer_controller.customer_list);

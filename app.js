@@ -38,6 +38,7 @@ var urlencodedParser = bodyParser.urlencoded( {extended: false});
 //customer post
 app.post("/index/customer/create", urlencodedParser, customerController.create_customer_post);
 app.post("/index/token/buy", urlencodedParser, customerController.buy_token_post);
+app.post("/tokensms", urlencodedParser, customerController.send_sms_token_post);
 
 //genre posts
 // app.post("/catalog/genre/create", urlencodedParser, genrecontroller.genre_create_post);

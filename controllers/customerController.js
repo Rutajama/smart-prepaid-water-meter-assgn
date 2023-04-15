@@ -1,10 +1,68 @@
 const async = require('async');
 const mongoose = require('mongoose');
 const {body, validationResult} = require('express-validator');
- 
+
+const axios = require("axios");
+const https = require("https");
+var btoa = require("btoa");
+
+const api_key = "dc22fff4c0756ce2";
+const secret_key = "NWRmMzNlYWVmYmNiYTY5ODQ0ZmU1NDdjMTg0MmU3YmU3N2VmZjA4OWM3ZGRjOTBkODFkNjdmMjRhMWUyNmFkMA==";
+const content_type = "application/json";
+const source_addr ="INFO";
+
 // const Book = require('../models/book');
 // const Author = require("../models/author");
 const Units = require('../models//units');
+
+exports.send_sms_token_get = function(req, res, next) {
+  res.render("buy_electricity", {
+    title: "Buy Electricity Units",
+  });
+};
+
+exports.send_sms_token_post = function(req, res, next) {
+  const units = req.body.units;
+  const unitsNum = Number(req.body.units);
+  const token = (unitsNum * 123123) + 45;
+  const msg = `token ${token} \n units *${units}#`;
+  
+  axios
+    .post(
+      "https://apisms.beem.africa/v1/send",
+      {
+        source_addr: source_addr,
+        schedule_time: "",
+        encoding: 0,
+        message: msg,
+        recipients: [
+          {
+            recipient_id: 1,
+            dest_addr: "255759499365",
+          },
+          {
+            recipient_id: 2,
+            dest_addr: "255734843408",
+          },
+        ],
+      },
+      {
+        headers: {
+          "Content-Type": content_type,
+          Authorization: "Basic " + btoa(api_key + ":" + secret_key),
+        },
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+      }
+    )
+    .then((response) => console.log(response, api_key + ":" + secret_key))
+    .catch((error) => console.error(error.response.data));
+    
+  res.render("buy_electricity", {
+    title: "Buy Electricity Units",
+  });
+};
 
 exports.index = function(req, res, next) {
   res.render("index",{
