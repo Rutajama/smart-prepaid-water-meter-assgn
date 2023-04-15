@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  h1(style='text-align: center; color: blue')=title
+
+  br
+
+  h2(style='color: green; margin-left: 20px')= aux_title
+  div(style='margin-left: 100px')
+    table(style='width:80%', border='2')
+      tr
+        th Name
+        th Phone Number
+        th Units
+        th Status
+        th Date
+      each item in results
+        tr
+          td #{item.name}
+          td #{item.phone}
+          td #{item.units}
+          td #{item.state}
+          td #{item.date}

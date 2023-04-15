@@ -1,12 +1,12 @@
 extends layout
 
 block content
-  h1(style='margin-left: 25%')= title
+  h1(style='margin-left: 25%; color: blue')= title
 
   //create buttons to buy token
 
-  button(type='button' class='buy-btn')
-    a(href='/token/buy') Buy token
+  button(type='button' class='buy-btn', style='margin-top: 50px')
+    a(href='/token/buy', style='text-decoration: none') Buy token
   //- div(class='buy-token')
   //-   p(style='color: white; font-size: 30px; margin-top: 8px') Buy token
 

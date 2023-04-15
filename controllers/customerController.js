@@ -20,16 +20,8 @@ exports.customer_details = function(req, res, next) {
   res.send("customer details. Not implemented");
 };
 
-exports.buy_token_get = function(req, res, next) {
-  res.render("buy_token_form",{
-    title: "Smart prepaid Water Meter",
-    aux_title: "Buy water units",
-
-  });
-};
-
 exports.fetch_token = function(req, res, next) {
-  Units.findOne({ name: "new"}, function(err, result) {
+  Units.findOne({ state: "new"}, function(err, result) {
     if (err) {
       throw err;
     }
@@ -37,7 +29,7 @@ exports.fetch_token = function(req, res, next) {
       res.send("0");
     }
     else {
-      result.name = "used";
+      result.state = "used";
       result.save((err) => {
         if(err) {
           return next(err);
@@ -47,10 +39,21 @@ exports.fetch_token = function(req, res, next) {
     }
   });
 };
+
+exports.buy_token_get = function(req, res, next) {
+  res.render("buy_token_form",{
+    title: "Smart prepaid Water Meter",
+    aux_title: "Buy water units",
+
+  });
+};
+
 exports.buy_token_post = function(req, res, next) {
   const token = new Units({
-    name: "new",
+    name: req.body.name,
+    phone: req.body.phone,
     units: req.body.units,
+    state: "new",
   });
 
   token.save((err) => {
@@ -71,6 +74,19 @@ exports.buy_token_post = function(req, res, next) {
     return;
   });
 
+};
+
+exports.show_transactions = function(req, res, next) {
+  Units.find({}, function(err, result) {
+    if (err) {
+      throw err;
+    }
+    res.render("transactions", {
+      title: "Smart prepaid Water Meter",
+      aux_title: "All transactions",
+      results: result,
+    });
+  });
 };
 
 exports.available_token = function(req, res, next) {
