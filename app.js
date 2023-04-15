@@ -20,13 +20,16 @@ const customerController = require("./controllers/customerController");
 // const bookinstancecontroller = require('./controllers/bookinstanceController');
 
 const app = express();
-app.use(helmet());
-app.use(compression());
+// app.use(helmet());
+// app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 app.use(express.json());
 
@@ -53,7 +56,9 @@ app.post("/index/token/buy", urlencodedParser, customerController.buy_token_post
 // app.post("/catalog/book/create", urlencodedParser, bookcontroller.book_create_post);
 // app.post("/catalog/book/:id/update", urlencodedParser, bookcontroller.book_update_post);
 
-mongoDB = "mongodb://127.0.0.1:27017/watermeter";
+const dev_db_url = "mongodb+srv://Geofrey:Geofrey1234@cluster0.wn8iyom.mongodb.net/assignmentDB?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
+
 main().catch(err => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
@@ -66,5 +71,6 @@ app.set('view engine', 'pug');
 app.use("/", indexRouter);
 // app.use("/users", usersRouter);
 // app.use("/catalog", catalogRouter);
+// app.use("/routes/index", customerRouter);
 
 module.exports = app;

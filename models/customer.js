@@ -4,7 +4,7 @@ const { DateTime } = require("luxon");
 const Schema = mongoose.Schema;
 
 const CustomerSchema = new Schema({
-  first_name: { type: String, require: true, maxLength: 100 },
+  first_name: { type: String, required: true, maxLength: 100 },
   family_name: { type: String, required: true, maxLength: 100 },
   units_balance: { 
     type: Number,

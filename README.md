@@ -1,2 +1,2 @@
 # smart-prepaid-water-meter-assgn
-smart prepaid water token buying system
+Express project with pug jade view

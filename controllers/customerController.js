@@ -4,6 +4,7 @@ const {body, validationResult} = require('express-validator');
  
 // const Book = require('../models/book');
 // const Author = require("../models/author");
+const Units = require('../models//units');
 
 exports.index = function(req, res, next) {
   res.render("index",{
@@ -21,30 +22,55 @@ exports.customer_details = function(req, res, next) {
 
 exports.buy_token_get = function(req, res, next) {
   res.render("buy_token_form",{
-    title: "Smart repaid Water Meter",
+    title: "Smart prepaid Water Meter",
     aux_title: "Buy water units",
 
   });
 };
 
-exports.buy_token_post = function(req, res, next) {
-  var rand1 = Math.random() * 10000;
-  rand1 = Math.trunc(rand1);
-  var rand2 = Math.random() * 10000;
-  rand2 = Math.trunc(rand2);
-  var rand3 = Math.random() * 10000;
-  rand3 = Math.trunc(rand3);
-  var rand4 = Math.random() * 10000;
-  rand4 = Math.trunc(rand4);
-
-  const units_bought = rand1.toString() + " " + rand2.toString() + " " + rand3.toString() + " " + rand4.toString();
-  
-  // res.send("units " + units_bought.toString());
-
-  res.render("buy_success", {
-    title: "success",
-    units: units_bought,
+exports.fetch_token = function(req, res, next) {
+  Units.findOne({ name: "new"}, function(err, result) {
+    if (err) {
+      throw err;
+    }
+    if(result == null) {
+      res.send("0");
+    }
+    else {
+      result.name = "used";
+      result.save((err) => {
+        if(err) {
+          return next(err);
+        }
+      });
+      res.send(`${result.units}`);
+    }
   });
+};
+exports.buy_token_post = function(req, res, next) {
+  const token = new Units({
+    name: "new",
+    units: req.body.units,
+  });
+
+  token.save((err) => {
+    if(err) {
+      res.render("buy_result", {
+        title: "failed",
+        units: req.body.units,
+      });
+      return next(err);
+    }
+    const unitsNum = Number(req.body.units);
+    const encToken = (unitsNum * 123123) + 45;
+    console.log(encToken)
+    res.render("buy_result", {
+      title: "success",
+      units: encToken,
+    });
+    return;
+  });
+
 };
 
 exports.available_token = function(req, res, next) {
