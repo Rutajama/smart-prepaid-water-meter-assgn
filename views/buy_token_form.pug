@@ -2,23 +2,23 @@ extends layout
 
 block content
 
-  h1=title
+  h1(style='text-align:center; color:blue')=title
 
   br
 
-  h2= aux_title
+  h2(style='margin-left: 5%')= aux_title
 
   div(style='margin-left:5%')
     form(method='POST' action='')
       div.form-group
         label(for='customer-name') Name:
-        input#customer-name.form-control(type='text' placeholder='Enter name' name='name' required='true' value='')
-       
+        input#customer-name.form-control(type='text' placeholder='Enter name' name='name' required='true')
+        br
         label(for='phone_number') Phone number:
-        input#phone_number.form-control(type='test' placeholder='Enter phone number' name='phone' required='true' value='')
-        
-        label(for='units') Units:
-        input#units.form-control(type='text' placeholder='Enter units' name='units' required='true' value='')
-      
+        input#phone_number.form-control(type='test' placeholder='Enter phone number' name='phone' required='true')
+        br
+        label(for='amount') Amount:
+        input#amount.form-control(type='text' placeholder='Enter amount' name='amount' required='true')
+        br
       button.btn.btn-primary(type='submit') Submit
   

@@ -6,7 +6,8 @@ block content
 
   br
 
-  h2(style='color: green; margin-left: 20px')= aux_title
+  h2(style='color: green; text-align: center')= aux_title
+  br
   div(style='margin-left: 100px')
     table(style='width:80%', border='2')
       tr
@@ -22,3 +23,7 @@ block content
           td #{item.units}
           td #{item.state}
           td #{item.date}
+  br
+  br
+  br
+  a(href='/transactions/clearall' class='delete-btn') Clear records

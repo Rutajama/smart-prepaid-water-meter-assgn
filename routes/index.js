@@ -29,4 +29,7 @@ router.get("/token/buy", customer_controller.buy_token_get);
 router.post("/token/buy", customer_controller.buy_token_post);
 
 router.get("/transactions", customer_controller.show_transactions);
+
+router.get("/transactions/clearall", customer_controller.clear_transactions);
+
 module.exports = router;

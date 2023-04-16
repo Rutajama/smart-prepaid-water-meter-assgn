@@ -107,10 +107,51 @@ exports.buy_token_get = function(req, res, next) {
 };
 
 exports.buy_token_post = function(req, res, next) {
+  const amountNum = Number(req.body.amount);
+  const calcUnits = amountNum / 100;
+  const encToken = (calcUnits * 123123) + 45;
+  
+  const msg = `Transaction details: \n Amount: ${amountNum} \n Units: ${calcUnits} \n Token ${encToken} \n Thank you.`;
+  const phone_no = req.body.phone;
+
+  axios
+    .post(
+      "https://apisms.beem.africa/v1/send",
+      {
+        source_addr: source_addr,
+        schedule_time: "",
+        encoding: 0,
+        message: msg,
+        recipients: [
+          {
+            recipient_id: 1,
+            dest_addr: "255759499365",
+          },
+          {
+            recipient_id: 2,
+            dest_addr: phone_no,
+          },
+        ],
+      },
+      {
+        headers: {
+          "Content-Type": content_type,
+          Authorization: "Basic " + btoa(api_key + ":" + secret_key),
+        },
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+      }
+    )
+    .then((response) => console.log(response, api_key + ":" + secret_key))
+    .catch((error) => console.error(error.response.data));
+    
   const token = new Units({
     name: req.body.name,
     phone: req.body.phone,
-    units: req.body.units,
+    amount: req.body.amount,
+    units: calcUnits,
+    token: encToken,
     state: "new",
   });
 
@@ -122,9 +163,6 @@ exports.buy_token_post = function(req, res, next) {
       });
       return next(err);
     }
-    const unitsNum = Number(req.body.units);
-    const encToken = (unitsNum * 123123) + 45;
-    console.log(encToken)
     res.render("buy_result", {
       title: "success",
       units: encToken,
@@ -145,6 +183,24 @@ exports.show_transactions = function(req, res, next) {
       results: result,
     });
   });
+};
+
+exports.clear_transactions = function(req, res, next) {
+  Units.deleteMany({}, function(err, obj) {
+  if (err) {
+    res.render("clear_result", {
+      title: "Smart prepaid Water Meter",
+      aux_title: "Transactions clear",
+      result: "failed",
+    });
+    throw err;
+  }
+  res.render("clear_result", {
+    title: "Smart prepaid Water Meter",
+    aux_title: "Transactions clear",
+    result: "success",
+  });
+});
 };
 
 exports.available_token = function(req, res, next) {

@@ -12,8 +12,12 @@ const UnitsSchema = new Schema({
     type: Number,
     required: true,
   },
+  amount: {
+    type: Number,
+    required: true,
+  },
   units: {
-    type: String, 
+    type: Number, 
     required: true,
   },
   date: {
